@@ -9,7 +9,6 @@ import type { Candidate } from "../data/candidates";
 export interface SubmitPayload {
   email: string;
   employeeId: string;
-  submittedAt: string;
   slots: Record<string, Candidate[]>;
 }
 
@@ -18,7 +17,6 @@ function buildFormBody(payload: SubmitPayload): string {
   const params = new URLSearchParams();
   params.append(e.email, payload.email);
   params.append(e.employeeId, payload.employeeId);
-  params.append(e.submittedAt, payload.submittedAt);
 
   for (const slotId of SLOT_IDS) {
     const entryKey = slotId as keyof typeof e;
