@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { AwardCard } from "./components/AwardCard";
 import { DoneCard } from "./components/DoneCard";
-import { RejectedCard } from "./components/RejectedCard";
-import { ALLOWED_DOMAIN } from "./config";
 import { AWARDS } from "./data/awards";
 import { CANDIDATES } from "./data/candidates";
 import { submitToGoogleForm } from "./lib/formSubmit";
@@ -28,10 +26,6 @@ function loadSubmitted(): StoredResult | null {
   }
 }
 
-function isAllowedEmail(email: string): boolean {
-  return email.trim().length > 0 && email.trim().endsWith(ALLOWED_DOMAIN);
-}
-
 export default function App() {
   const [email, setEmail] = useState("");
   const [employeeId, setEmployeeId] = useState("");
@@ -43,7 +37,6 @@ export default function App() {
 
   const emailTrimmed = email.trim();
   const employeeIdTrimmed = employeeId.trim();
-  const allowed = isAllowedEmail(emailTrimmed);
   const requiredFieldsOk = emailTrimmed.length > 0 && employeeIdTrimmed.length > 0;
 
   const handleSelectionsChange = useCallback((slotId: string, selected: Candidate[]) => {
@@ -65,7 +58,6 @@ export default function App() {
       setValidationError({ type: "count", message: "請填寫員工編號。" });
       return;
     }
-    if (!allowed) return;
     const err = validate(selections);
     if (err) {
       setValidationError(err);
@@ -100,7 +92,7 @@ export default function App() {
       setSubmitStatus("error");
       setSubmitError(e instanceof Error ? e.message : "送出失敗，請稍後再試");
     }
-  }, [selections, emailTrimmed, employeeIdTrimmed, allowed]);
+  }, [selections, emailTrimmed, employeeIdTrimmed]);
 
   const handleVoteAgain = useCallback(() => {
     setSubmitted(null);
@@ -113,8 +105,7 @@ export default function App() {
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
-  const canSubmit =
-    requiredFieldsOk && allowed && !validate(selections);
+  const canSubmit = requiredFieldsOk && !validate(selections);
 
   // 完成頁
   if (submitted) {
@@ -146,26 +137,6 @@ export default function App() {
     );
   }
 
-  // 已輸入 email 但網域不符（必填後一定會先有 email）
-  if (emailTrimmed.length > 0 && !allowed) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-100 py-8 px-4">
-        <div className="w-full max-w-md">
-          <RejectedCard email={emailTrimmed} allowedDomain={ALLOWED_DOMAIN} />
-          <div className="mt-6 text-center">
-            <button
-              type="button"
-              onClick={() => setEmail("")}
-              className="rounded-lg bg-slate-200 px-4 py-2 text-slate-700 hover:bg-slate-300"
-            >
-              重新輸入 Email
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   // 投票表單
   return (
     <div className="min-h-screen bg-slate-100 py-8 px-4">
@@ -178,7 +149,7 @@ export default function App() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={`請輸入公司網域 ${ALLOWED_DOMAIN}`}
+              placeholder="請輸入 Email"
               className="mt-1 w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-800 placeholder-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
             />
           </div>

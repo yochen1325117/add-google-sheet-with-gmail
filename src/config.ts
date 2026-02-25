@@ -1,12 +1,8 @@
 /**
  * 投票系統設定
- * - ALLOWED_DOMAIN: 有填 email 時只允許此網域結尾
  * - FORM: Google 表單 ID 與各題 entry id，詳見 docs/GOOGLE_FORM_SETUP.md
  */
 
-/** 有填 email 時只允許此網域結尾，例如 "@company.com" */
-export const ALLOWED_DOMAIN = "@91app.com";
-// https://docs.google.com/forms/d/e/1FAIpQLSeyhoE0BjxHrTKXv7RPnoqDiph0j7umht2pOyQpxaQfFE8C0A/viewform?usp=publish-editor
 export const FORM = {
   id: "1FAIpQLSeyhoE0BjxHrTKXv7RPnoqDiph0j7umht2pOyQpxaQfFE8C0A",
   action: (id: string) => `https://docs.google.com/forms/d/e/${id}/formResponse`,
