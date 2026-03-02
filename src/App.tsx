@@ -94,17 +94,6 @@ export default function App() {
     }
   }, [selections, emailTrimmed, employeeIdTrimmed]);
 
-  const handleVoteAgain = useCallback(() => {
-    setSubmitted(null);
-    setEmail("");
-    setEmployeeId("");
-    setSelections({});
-    setValidationError(null);
-    setSubmitStatus("idle");
-    setSubmitError(null);
-    localStorage.removeItem(STORAGE_KEY);
-  }, []);
-
   const canSubmit = requiredFieldsOk && !validate(selections);
 
   // 完成頁
@@ -123,15 +112,6 @@ export default function App() {
             awards={AWARDS}
             selections={sel}
           />
-          <div className="mt-6 text-center">
-            <button
-              type="button"
-              onClick={handleVoteAgain}
-              className="rounded-lg bg-slate-200 px-4 py-2 text-slate-700 hover:bg-slate-300"
-            >
-              再投一次
-            </button>
-          </div>
         </div>
       </div>
     );
