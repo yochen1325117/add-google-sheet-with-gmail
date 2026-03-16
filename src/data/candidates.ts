@@ -1,5 +1,5 @@
 /**
- * 投票選項：1～200 流水號
+ * 投票選項：1～103 流水號
  */
 
 export interface Candidate {
@@ -7,7 +7,7 @@ export interface Candidate {
   name: string;
 }
 
-export const CANDIDATES: Candidate[] = Array.from({ length: 200 }, (_, i) => {
+export const CANDIDATES: Candidate[] = Array.from({ length: 103 }, (_, i) => {
   const n = i + 1;
   return { id: String(n), name: String(n) };
 });

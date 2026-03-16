@@ -21,9 +21,22 @@ export function AwardCard({
   onSelectionsChange,
   validationError,
 }: AwardCardProps) {
+  // 檢查是否有獎項級別的錯誤（incomplete 類型且 awardId 匹配）
+  const awardLevelError =
+    validationError &&
+    validationError.type === "incomplete" &&
+    validationError.awardId === award.id
+      ? validationError.message
+      : undefined;
+
   return (
     <div className="rounded-xl bg-white p-4 shadow-md sm:p-6">
       <h2 className="mb-4 text-lg font-semibold text-slate-800">{award.title}</h2>
+      {awardLevelError && (
+        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          {awardLevelError}
+        </div>
+      )}
       <div className="space-y-4">
         {([1, 2, 3] as const).map((place) => {
           const slotId = getSlotId(award.id, place);
