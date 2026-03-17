@@ -4,7 +4,7 @@ import { DoneCard } from "./components/DoneCard";
 import { AWARDS } from "./data/awards";
 import { CANDIDATES } from "./data/candidates";
 import { submitToGoogleForm } from "./lib/formSubmit";
-import { validate, type Selections, type ValidationError } from "./lib/validation";
+import { validate, validateEmployeeId, type Selections, type ValidationError } from "./lib/validation";
 import type { Candidate } from "./data/candidates";
 
 const STORAGE_KEY = "voting_submitted";
@@ -58,6 +58,11 @@ export default function App() {
       setValidationError({ type: "count", message: "請填寫員工編號。" });
       return;
     }
+    const employeeIdErr = validateEmployeeId(employeeIdTrimmed);
+    if (employeeIdErr) {
+      setValidationError({ type: "employeeId", message: employeeIdErr });
+      return;
+    }
     const err = validate(selections);
     if (err) {
       setValidationError(err);
@@ -94,7 +99,10 @@ export default function App() {
     }
   }, [selections, emailTrimmed, employeeIdTrimmed]);
 
-  const canSubmit = requiredFieldsOk && !validate(selections);
+  const canSubmit =
+    requiredFieldsOk &&
+    !validateEmployeeId(employeeIdTrimmed) &&
+    !validate(selections);
 
   // 完成頁
   if (submitted) {
@@ -134,14 +142,22 @@ export default function App() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700">員工編號（必填）</label>
+            <label className="block text-sm font-medium text-slate-700">
+              員工編號（必填，格式：兩個英文＋四個數字，例如 NY2661）
+            </label>
             <input
               type="text"
               value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
-              placeholder="請輸入員工編號"
+              onChange={(e) => {
+                setEmployeeId(e.target.value);
+                if (validationError?.type === "employeeId") setValidationError(null);
+              }}
+              placeholder="例如：NY2661"
               className="mt-1 w-full rounded border border-slate-300 bg-white px-3 py-2 text-slate-800 placeholder-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
             />
+            {validationError?.type === "employeeId" && (
+              <p className="mt-1 text-sm text-red-600">{validationError.message}</p>
+            )}
           </div>
         </div>
 
@@ -158,7 +174,7 @@ export default function App() {
           ))}
         </div>
 
-        {validationError && (
+        {validationError && validationError.type !== "employeeId" && (
           <div className="rounded-lg bg-red-50 p-4 text-sm text-red-700">
             {validationError.message}
           </div>

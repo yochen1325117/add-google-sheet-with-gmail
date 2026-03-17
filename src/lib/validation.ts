@@ -9,10 +9,22 @@ import { AWARDS, SLOT_IDS, getSlotId } from "../data/awards";
 export type Selections = Record<string, Candidate[]>;
 
 export interface ValidationError {
-  type: "duplicate" | "count" | "incomplete";
+  type: "duplicate" | "count" | "incomplete" | "employeeId";
   message: string;
   slotId?: string;
   awardId?: string;
+}
+
+/** 員工編號格式：兩個英文＋四個數字，例如 NY2661 */
+const EMPLOYEE_ID_REGEX = /^[A-Za-z]{2}[0-9]{4}$/;
+
+export function validateEmployeeId(employeeId: string): string | null {
+  const trimmed = employeeId.trim();
+  if (!trimmed) return null; // 空值由必填檢查處理
+  if (!EMPLOYEE_ID_REGEX.test(trimmed)) {
+    return "員工編號格式錯誤，需為兩個英文＋四個數字（例如：NY2661）。";
+  }
+  return null;
 }
 
 /** 收集所有已選的 id（跨槽位） */
