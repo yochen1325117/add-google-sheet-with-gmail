@@ -130,6 +130,34 @@ export default function App() {
     <div className="min-h-screen bg-slate-100 py-8 px-4">
       <div className="mx-auto max-w-2xl space-y-6">
         <div className="rounded-xl bg-white p-4 shadow-md sm:p-6">
+          <h1 className="mb-3 text-xl font-semibold text-slate-800">
+            全能辦公桌改造王 Season I 人氣投票開始！
+          </h1>
+          <p className="mb-2 text-slate-600">
+            萬眾矚目的 全能辦公桌改造王 Season I 🎉
+          </p>
+          <p className="mb-2 text-slate-600">
+            來自各方設計新銳的創意改造造
+            <span role="img" aria-label="wrench" className="inline-block align-text-bottom">🛠️</span>
+            <span role="img" aria-label="hammer" className="inline-block align-text-bottom">🔨</span>
+            <span role="img" aria-label="hocho" className="inline-block align-text-bottom">🔪</span>
+          </p>
+          <p className="text-slate-600">
+            邀請大家投出你心目中最佳符合 6 項主題的改造王
+          </p>
+          <p className="text-slate-600">投下你心目中最符合主題的前三名</p>
+          <p className="text-slate-600">若是沒有符合主題可不投</p>
+        </div>
+
+        <div className="rounded-xl bg-white p-4 shadow-md sm:p-6">
+          <img
+            src={`${import.meta.env.BASE_URL}awards-example.png`}
+            alt="六個獎項範例圖：全能辦公桌改造王、北歐極簡主義擁護者、空間利用的收納魔術師、台幣戰士、五感療癒的支配者、文藝青年"
+            className="w-full rounded-lg object-cover"
+          />
+        </div>
+
+        <div className="rounded-xl bg-white p-4 shadow-md sm:p-6">
           <h1 className="mb-4 text-xl font-semibold text-slate-800">投票</h1>
           <div className="mb-4">
             <label className="block text-sm font-medium text-slate-700">Email（必填）</label>
